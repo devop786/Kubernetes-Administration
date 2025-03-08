@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: azzu-role-binding
+subjects:
+  - kind: User  # "User" should be capitalized
+    name: azzu
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: azzu-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+

@@ -15,7 +15,7 @@ spec:
       labels:
         app: registrationform
     spec:
-      nodeName: ip-172-31-44-53
+      nodeName: ip-172-31-32-173 # specified your Nodename based on kubectl get nodes output
       containers:
       - name: registrationform
         image: mohammadaszadali/registrationform:12
@@ -24,14 +24,14 @@ spec:
         - containerPort: 80
         livenessProbe:
           httpGet:
-            path: /reg.html
+            path: /
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /reg.html
+            path: /
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 10 

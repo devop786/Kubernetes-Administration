@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-form
+  namespace: med-dev
+  labels:
+    app: login-form
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: login-form  # Ensure the selector matches the labels in the pod template
+  template:
+    metadata:
+      labels:
+        app: login-form  # Ensure the labels are consistent with the selector
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: registration # Pod affinity with app=registration
+              topologyKey: "kubernetes.io/hostnames"  # Pods must be scheduled on the same node
+      containers:
+        - name: registrationform
+          image: mohammadaszadali/registrationform:12
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: med-dev
+  name: registration-form
+  labels:
+    app: registration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registration
+  template:
+    metadata:
+      name: registration
+      labels:
+        app: registration
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:  # Using preferred (soft) rule
+            - weight: 1  # Optional, you can give it a weight to prioritize preferences
+              preference:
+                matchExpressions:
+                  - key: "env"
+                    operator: In
+                    values:
+                      - "dev"
+                      - "uat"
+      containers:
+        - name: registration-form
+          image: mohammadaszadali/registrationform:12
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+
